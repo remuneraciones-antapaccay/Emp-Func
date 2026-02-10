@@ -2230,34 +2230,36 @@ const trabajadores = {
 function verDetalle() {
   const codigo = document.getElementById("codigo").value.trim();
   const error = document.getElementById("error");
-  const convenio = trabajadores[codigo][0];
 
+  // Verificamos si el código ingresado existe en la base de datos
   if (!trabajadores[codigo]) {
     error.innerText = "❌ Código incorrecto";
     return;
   }
 
- for (let i = 1; i <= 8; i++) {
+  // Obtener el tipo de convenio del trabajador
+  const convenio = trabajadores[codigo][0]; // El primer valor es el tipo de convenio (Empleado, Staff, Funcionario)
 
-  if (convenio === "Empleado" && i === 4) {
-    document.getElementById("d" + i).parentElement.style.display = "none"; // Ocultar la fila
-  } else {
-    document.getElementById("d" + i).innerText = trabajadores[codigo][i]; // Mostrar los días
-    document.getElementById("d" + i).parentElement.style.display = "table-row"; // Asegurar que la fila esté visible
-  }
-}
-
-// Mostrar el total de días (el último valor del array)
-document.getElementById("d9").innerText = trabajadores[codigo][9]; // Total de días
-
-}
-
+  // Mostrar los días de ausencia en las celdas de la tabla
+  for (let i = 1; i <= 8; i++) {
+    // Si el trabajador tiene convenio "Empleado" y estamos en la fila "Día Libre por Cumpleaños" (d4), la ocultamos
+    if (convenio === "Empleado" && i === 4) {
+      document.getElementById("d" + i).parentElement.style.display = "none"; // Ocultar la fila
+    } else {
+      document.getElementById("d" + i).innerText = trabajadores[codigo][i]; // Mostrar los días
+      document.getElementById("d" + i).parentElement.style.display = "table-row"; // Asegurar que la fila esté visible
+    }
   }
 
+  // Mostrar el total de días directamente desde el último valor del array
+  document.getElementById("d9").innerText = trabajadores[codigo][9]; // Total de días (último valor)
+
+  // Ocultar la pantalla de login y mostrar el detalle
   document.getElementById("login").style.display = "none";
   document.getElementById("detalle").style.display = "block";
 }
 
+}
 function volver() {
   document.getElementById("codigo").value = "";
   document.getElementById("error").innerText = "";
